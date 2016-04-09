@@ -51,6 +51,8 @@ def get_sec_der_and_m_inv(n_rho):
     n, rho = n_rho
     D = get_second_derivative_matrix(n)
     M = np.eye(n) + rho * D.T.dot(D)
+    # This could be improved some by using Cholesky decomp
+    # rather than general matrix inversion (maybe)
     M_inv = inv(M)
     return D, M_inv
 
