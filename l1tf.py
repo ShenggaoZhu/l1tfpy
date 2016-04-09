@@ -1,5 +1,5 @@
 """
-    Solve the L1TF problem ADMM and only numpy
+    Solve the L1TF problem ADMM and only numpy, no cvx solvers
 """
 
 import numpy as np
@@ -55,7 +55,7 @@ def get_sec_der_and_m_inv(n_rho):
     return D, M_inv
 
 
-def l1tf(y, iter_max=1000, rho=1.0, lam=1.0, prompt=False,
+def l1tf(y, iter_max=1000, rho=1.0, lam=3.0, prompt=False,
          tol=1e-8, verbose=False):
     """
     Find the bets fit L1TF solution

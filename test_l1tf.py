@@ -3,7 +3,7 @@ from l1tf import l1tf
 from matplotlib import pylab as plt
 
 
-def test_l1tf(n=50, seed=4242, iter_max=1000, rho=1, lam=1.0,
+def demo_l1tf(n=50, seed=4242, iter_max=1000, rho=1.0, lam=3.0,
               prompt=False, tol=1e-8, verbose=True, do_plot=True):
     """
     :param n: dimension of vector
@@ -25,7 +25,14 @@ def test_l1tf(n=50, seed=4242, iter_max=1000, rho=1, lam=1.0,
     x = l1tf(y, iter_max=iter_max, rho=rho, lam=lam, tol=tol,
              prompt=prompt, verbose=verbose)
     if do_plot:
-        plt.clf()
-        plt.plot(x, 'ro-')
-        plt.plot(y, 'bo-')
-        plt.show()
+        plt.plot(y, 'bo-', alpha=0.7)
+        plt.plot(x, color='red', alpha=0.7, linewidth=2)
+
+
+def test_four():
+    figure = plt.figure(figsize=(11, 8))
+    plt.clf()
+    for i, seed in enumerate(range(4)):
+        plt.subplot(2, 2, i+1)
+        demo_l1tf(seed=seed)
+    plt.show()
