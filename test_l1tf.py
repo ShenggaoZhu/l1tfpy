@@ -41,3 +41,6 @@ def test_four():
         plt.subplot(2, 2, i+1)
         demo_l1tf(seed=seed)
     plt.show()
+
+if __name__ == "__main__":
+    test_four()
