@@ -2,6 +2,11 @@ import numpy as np
 from l1tf import l1tf
 from matplotlib import pylab as plt
 
+try:
+    import seaborn
+except ImportError:
+    pass
+
 
 def demo_l1tf(n=50, seed=4242, iter_max=1000, rho=1.0, lam=3.0,
               prompt=False, tol=1e-8, verbose=True, do_plot=True):
