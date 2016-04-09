@@ -46,33 +46,13 @@ def get_second_derivative_matrix(n):
         D[row_num, row_num:row_num+3] = v
     return D
 
-
-def test_l1tf(n=50, seed=None, iter_max=1000, rho=1, lam=1.0,
-              prompt=False, tol=1e-8, verbose=True, do_plot=True):
-    """
-    :param n: dimension of vector
-    :param seed: random seed
-    :param iter_max: maximum number of iterations
-    :param rho: the ADMM step parameter
-    :param lam: the problem's l1 regularization parameter
-    :param prompt: show plots and print stuff at each step
-                (default False)
-    :param tol: Stop if max change between steps is lower than this
-                times the max value of y
-    :param verbose: Print stuff (default False)
-    :param do_plot: Make a plot (default True)
-    :return:
-    """
-    if seed is not None:
-        np.random.seed(seed)
-    y = np.cumsum(np.random.randn(n))
-    x = l1tf(y, iter_max=iter_max, rho=rho, lam=lam, tol=tol,
-             prompt=prompt, verbose=verbose)
-    if do_plot:
-        plt.clf()
-        plt.plot(x, 'ro-')
-        plt.plot(y, 'bo-')
-        plt.show()
+@memo
+def get_sec_der_and_m_inv(n_rho):
+    n, rho = n_rho
+    D = get_second_derivative_matrix(n)
+    M = np.eye(n) + rho * D.T.dot(D)
+    M_inv = inv(M)
+    return D, M_inv
 
 
 def l1tf(y, iter_max=1000, rho=1.0, lam=1.0, prompt=False,
@@ -96,15 +76,15 @@ def l1tf(y, iter_max=1000, rho=1.0, lam=1.0, prompt=False,
     n = len(y)
     m = n - 2
 
-    D = get_second_derivative_matrix(n)
-    M = np.eye(n) + rho * D.T.dot(D)
-    M_inv = inv(M)
+    D, M_inv = get_sec_der_and_m_inv((n, rho))
 
     # initialize
     x = y.copy()
     z = np.zeros(m)
     u = np.zeros(m)
     ratio = lam/rho
+
+    iter = max_delta = 0
 
     for iter in xrange(iter_max):
         x_last = x
